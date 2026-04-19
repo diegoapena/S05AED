@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SnapshotNode 
+public class SnapshotNode
 {
     public int Turn;
 
@@ -10,7 +10,7 @@ public class SnapshotNode
     public int dtx;
     public int spd;
 
-    public SnapshotNode(Player player , int turn)
+    public SnapshotNode(Player player, int turn)
     {
         Turn = turn;
 
@@ -20,6 +20,4 @@ public class SnapshotNode
         dtx = player.dtx;
         spd = player.spd;
     }
-
-    
 }

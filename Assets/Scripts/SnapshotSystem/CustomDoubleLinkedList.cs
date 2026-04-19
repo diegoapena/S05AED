@@ -7,54 +7,44 @@ public class CustomDoubleLinkedList : DoubleLinkedList<SnapshotNode>
 
     public void SaveTurn()
     {
-        //base.Add(value);
-
-        if(pointer == tail)
+        // Si el puntero no está en el último nodo, eliminar todos los nodos futuros
+        if (pointer != tail)
         {
-            SnapshotNode snapshot = new SnapshotNode(GameManager.instance.player, Count);
-            base.Add(snapshot);
-            ResetPointer();
-        }
-        else
-        {
-            RemoveFromPosition(pointer);
-            SnapshotNode snapshot = new SnapshotNode(GameManager.instance.player, Count);
-            base.Add(snapshot);
-            ResetPointer();
+            RemoveFromPosition(pointer.Next);
         }
 
-        
-    }   
+        // Crear un nuevo snapshot y agregarlo al final
+        SnapshotNode snapshot = new SnapshotNode(GameManager.instance.player, Count);
+        base.Add(snapshot);
+
+        // Actualizar el puntero al nuevo último nodo
+        ResetPointer();
+    }
 
     public void ResetPointer()
     {
         pointer = tail;
     }
 
-
     public void MoveBackwards()
     {
-        if(pointer.Prev == null) return;
-
+        if (pointer.Prev == null) return;
         pointer = pointer.Prev;
     }
+
     public void MoveForward()
     {
         if (pointer.Next == null) return;
-
         pointer = pointer.Next;
     }
 
     public void LoadTurn(Player player)
     {
-        Debug.Log("Cargando el turno: "+ pointer.Value.Turn);
+        Debug.Log("Cargando el turno: " + pointer.Value.Turn);
         player.transform.position = pointer.Value.playerPosition;
-        player.transform.eulerAngles =  pointer.Value.playerRotation;
+        player.transform.eulerAngles = pointer.Value.playerRotation;
         player.str = pointer.Value.str;
-        player.dtx = pointer.Value.dtx; 
-        player.spd = pointer.Value.spd; 
-
+        player.dtx = pointer.Value.dtx;
+        player.spd = pointer.Value.spd;
     }
-
-
 }
