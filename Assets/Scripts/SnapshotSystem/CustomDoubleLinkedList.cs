@@ -24,23 +24,45 @@ public class CustomDoubleLinkedList : DoubleLinkedList<SnapshotNode>
 
     public void MoveBackwards()
     {
-        if (pointer.Prev == null) return;
-        pointer = pointer.Prev;
+        MoveBackwardsRecursive(pointer);
+    }
+
+    private void MoveBackwardsRecursive(Node<SnapshotNode> current)
+    {
+        if (current == null || current.Prev == null) return; // Caso base: no hay nodo previo
+
+        pointer = current.Prev; // Mover el puntero al nodo previo
+        Debug.Log($"Retrocediendo al turno: {pointer.Value.Turn}");
     }
 
     public void MoveForward()
     {
-        if (pointer.Next == null) return;
-        pointer = pointer.Next;
+        MoveForwardRecursive(pointer);
+    }
+
+    private void MoveForwardRecursive(Node<SnapshotNode> current)
+    {
+        if (current == null || current.Next == null) return; // Caso base: no hay nodo siguiente
+
+        pointer = current.Next; // Mover el puntero al nodo siguiente
+        Debug.Log($"Avanzando al turno: {pointer.Value.Turn}");
     }
 
     public void LoadTurn(Player player)
     {
-        Debug.Log("Cargando el turno: " + pointer.Value.Turn);
-        player.transform.position = pointer.Value.playerPosition;
-        player.transform.eulerAngles = pointer.Value.playerRotation;
-        player.str = pointer.Value.str;
-        player.dtx = pointer.Value.dtx;
-        player.spd = pointer.Value.spd;
+        LoadTurnRecursive(pointer, player);
+    }
+
+    private void LoadTurnRecursive(Node<SnapshotNode> current, Player player)
+    {
+        if (current == null) return; // Caso base: no hay nodo actual
+
+        Debug.Log($"Cargando el turno: {current.Value.Turn}");
+        player.transform.position = current.Value.playerPosition;
+        player.transform.eulerAngles = current.Value.playerRotation;
+        player.str = current.Value.str;
+        player.dtx = current.Value.dtx;
+        player.spd = current.Value.spd;
     }
 }
+
