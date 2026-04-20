@@ -10,7 +10,12 @@ public class GameManager : MonoBehaviour
     public Player player;
     public CustomDoubleLinkedList snapshots;
 
-    public List<Transform> entities; // Asigna tus entidades en el inspector
+
+    public static int TileValue = 2;
+    public bool EnablePlayerTurn = true;
+    public Action OnPassTurn;
+    public SpawnEnemy spawner;
+
 
     void Awake()
     {
@@ -31,7 +36,6 @@ public class GameManager : MonoBehaviour
     {
         if (snapshots == null)
         {
-           
             return;
         }
 
@@ -44,11 +48,10 @@ public class GameManager : MonoBehaviour
     {
         if (snapshots == null)
         {
-            
             return;
         }
 
-        snapshots.LoadTurn(player);
+        snapshots.LoadTurn(player,spawner);
         Debug.Log("Turno cargado.");
     }
 
@@ -57,12 +60,15 @@ public class GameManager : MonoBehaviour
     {
         if (snapshots == null)
         {
-            
             return;
         }
 
         snapshots.MoveForward();
         LoadTurn();
+
+        // Disparar el evento OnPassTurn
+        OnPassTurn?.Invoke();
+
         Debug.Log("Turno siguiente cargado.");
     }
 
@@ -71,12 +77,15 @@ public class GameManager : MonoBehaviour
     {
         if (snapshots == null)
         {
-            
             return;
         }
 
         snapshots.MoveBackwards();
         LoadTurn();
+
+        // Disparar el evento OnPassTurn
+        OnPassTurn?.Invoke();
+
         Debug.Log("Turno anterior cargado.");
     }
 }

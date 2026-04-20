@@ -1,9 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
-public class TurnPlaybackManager : MonoBehaviour
-{
-    public Player player; // Referencia al jugador
+public class TurnPlaybackManager : MonoBehaviour { }
+
+   /* public Player player; // Referencia al jugador
     private CustomDoubleLinkedList snapshotList; // Referencia a la lista de snapshots
 
     private Coroutine autoPlaybackCoroutine; // Para controlar la reproducción automática
@@ -57,3 +57,4 @@ public class TurnPlaybackManager : MonoBehaviour
         StopAutoPlayback();
     }
 }
+   */

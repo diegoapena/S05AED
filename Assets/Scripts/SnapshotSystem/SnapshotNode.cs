@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class SnapshotNode
 {
@@ -6,11 +7,12 @@ public class SnapshotNode
 
     public Vector3 playerPosition;
     public Vector3 playerRotation;
+    public List<Vector3> EnemiesPos;
     public int str;
     public int dtx;
     public int spd;
 
-    public SnapshotNode(Player player, int turn)
+    public SnapshotNode(Player player, int turn, SpawnEnemy spawner)
     {
         Turn = turn;
 
@@ -19,5 +21,10 @@ public class SnapshotNode
         str = player.str;
         dtx = player.dtx;
         spd = player.spd;
+        
+        foreach (var enemy in spawner.enemies)
+        {
+            EnemiesPos.Add(enemy.transform.position);
+        }
     }
 }

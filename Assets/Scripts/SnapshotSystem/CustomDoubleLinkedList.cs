@@ -12,9 +12,10 @@ public class CustomDoubleLinkedList : DoubleLinkedList<SnapshotNode>
         {
             RemoveFromPosition(pointer.Next);
         }
+        
 
         // Crear un nuevo snapshot y agregarlo al final
-        SnapshotNode snapshot = new SnapshotNode(GameManager.instance.player, Count);
+        SnapshotNode snapshot = new SnapshotNode(GameManager.instance.player, Count, GameManager.instance.spawner);
         base.Add(snapshot);
 
         // Actualizar el puntero al nuevo último nodo
@@ -38,13 +39,25 @@ public class CustomDoubleLinkedList : DoubleLinkedList<SnapshotNode>
         pointer = pointer.Next;
     }
 
-    public void LoadTurn(Player player)
+    public void LoadTurn(Player player, SpawnEnemy spawner)
     {
         Debug.Log("Cargando el turno: " + pointer.Value.Turn);
+
+        // Restaurar la posición y atributos del jugador
         player.transform.position = pointer.Value.playerPosition;
         player.transform.eulerAngles = pointer.Value.playerRotation;
         player.str = pointer.Value.str;
         player.dtx = pointer.Value.dtx;
         player.spd = pointer.Value.spd;
+
+        // Restaurar los enemigos
+        spawner.ClearEnemies();
+        spawner.LoadEnimes(pointer.Value.EnemiesPos);
+
+        // Forzar a los enemigos a actualizar su objetivo
+        foreach (var enemy in spawner.enemies)
+        {
+            enemy.Set(player.transform, enemy.transform.position);
+        }
     }
 }
