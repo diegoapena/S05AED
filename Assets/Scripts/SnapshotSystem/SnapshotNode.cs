@@ -12,7 +12,7 @@ public class SnapshotNode
     public int dtx;
     public int spd;
 
-    public SnapshotNode(Player player, int turn, SpawnEnemy spawner)
+    public SnapshotNode(Player player, int turn)
     {
         Turn = turn;
 
@@ -22,9 +22,6 @@ public class SnapshotNode
         dtx = player.dtx;
         spd = player.spd;
         
-        foreach (var enemy in spawner.enemies)
-        {
-            EnemiesPos.Add(enemy.transform.position);
-        }
+       
     }
 }

@@ -8,14 +8,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public Player player;
+    public Enemy enemy; // Referencia al enemigo en la escena
     public CustomDoubleLinkedList snapshots;
-
-
     public static int TileValue = 2;
     public bool EnablePlayerTurn = true;
     public Action OnPassTurn;
-    public SpawnEnemy spawner;
-
 
     void Awake()
     {
@@ -24,7 +21,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // Inicializa snapshots si no está asignado en el inspector
         if (snapshots == null)
         {
             snapshots = new CustomDoubleLinkedList();
@@ -36,11 +32,31 @@ public class GameManager : MonoBehaviour
     {
         if (snapshots == null)
         {
+            Debug.LogError("Snapshots no está inicializado.");
             return;
         }
 
         snapshots.SaveTurn();
         Debug.Log("Turno guardado. Total de turnos: " + snapshots.Count);
+
+        // Deshabilitar el turno del jugador
+        EnablePlayerTurn = false;
+    }
+
+    [Button]
+    public void MoveEnemy()
+    {
+        if (enemy == null)
+        {
+            Debug.LogError("El enemigo no está asignado en GameManager.");
+            return;
+        }
+
+        // Mover al enemigo hacia el jugador
+        enemy.MoveToTarget();
+
+        // Habilitar el turno del jugador nuevamente
+        EnablePlayerTurn = true;
     }
 
     [Button]
@@ -48,10 +64,11 @@ public class GameManager : MonoBehaviour
     {
         if (snapshots == null)
         {
+            Debug.LogError("Snapshots no está inicializado.");
             return;
         }
 
-        snapshots.LoadTurn(player,spawner);
+        snapshots.LoadTurn(player);
         Debug.Log("Turno cargado.");
     }
 
@@ -60,15 +77,12 @@ public class GameManager : MonoBehaviour
     {
         if (snapshots == null)
         {
+            Debug.LogError("Snapshots no está inicializado.");
             return;
         }
 
         snapshots.MoveForward();
         LoadTurn();
-
-        // Disparar el evento OnPassTurn
-        OnPassTurn?.Invoke();
-
         Debug.Log("Turno siguiente cargado.");
     }
 
@@ -77,15 +91,12 @@ public class GameManager : MonoBehaviour
     {
         if (snapshots == null)
         {
+            Debug.LogError("Snapshots no está inicializado.");
             return;
         }
 
         snapshots.MoveBackwards();
         LoadTurn();
-
-        // Disparar el evento OnPassTurn
-        OnPassTurn?.Invoke();
-
         Debug.Log("Turno anterior cargado.");
     }
 }
